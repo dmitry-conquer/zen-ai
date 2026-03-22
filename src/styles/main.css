@@ -1,0 +1,26 @@
+@import "tailwindcss";
+/* @plugin '@tailwindcss/typography'; */
+
+/*
+ * Content sources - where Tailwind scans for classes
+ */
+@source "../../pages/**/*.html";
+@source "../../components/**/*.html";
+
+/*
+ * Alpine.js x-cloak directive
+ * Hides elements until Alpine.js initializes
+ */
+[x-cloak] {
+  display: none !important;
+}
+
+/*
+ * Google Fonts — added by AI at the very top of this file (before @import "tailwindcss").
+ * Font names are defined in .claude/rules/layout.md → Typography & Fonts.
+ * IMPORTANT: @import url(...) must appear before @import "tailwindcss" — move it to line 1.
+ * Example:
+ *   @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap");
+ *   @import "tailwindcss";
+ */
+
