@@ -1,7 +1,3 @@
----
-globs: ["**/*.html", "**/*.hbs", "src/**/*.ts"]
----
-
 # Layout & Styling Rules
 
 ## Tailwind v4
@@ -9,7 +5,7 @@ globs: ["**/*.html", "**/*.hbs", "src/**/*.ts"]
 - Use Tailwind's **built-in color palette** directly (e.g., `bg-slate-900`, `text-amber-500`)
 - Do NOT create custom `--color-*` tokens in `main.css`
 - Arbitrary values (e.g., `w-[347px]`) are a **last resort** only
-- `style=` attributes only when Alpine.js dynamic binding requires it
+- `style=` attributes only when Alpine.js dynamic binding requires it, or for background images (see ## Background images)
 
 ### Forbidden class patterns
 - `.card`, `.btn`, `.hero`, `.section-title` — any named abstraction
@@ -17,8 +13,10 @@ globs: ["**/*.html", "**/*.hbs", "src/**/*.ts"]
 
 ## Colors
 
-### If colors are specified for this project
-Use the Tailwind shades specified. Apply them consistently:
+Colors are specified in `CLAUDE.md → ## Project`. Read them from there before building.
+
+### If colors are specified
+Use the Tailwind shades from `CLAUDE.md`. Apply them consistently:
 | Role            | Usage                                          |
 |-----------------|------------------------------------------------|
 | Primary (dark)  | Hero, header, dark section backgrounds         |
@@ -28,25 +26,25 @@ Use the Tailwind shades specified. Apply them consistently:
 | Text on light   | Body text on light/white backgrounds           |
 
 ### If colors are NOT specified
-Analyze the images in `design-examples/` and select the closest matching Tailwind color shades.
-Typical HVAC/service site palette (use as fallback):
+Analyze the images in `design-examples/` — derive the palette directly from what you see there.
+Select the closest matching Tailwind shades and apply them consistently throughout.
+Typical fallback for a local service business:
 - Primary dark → `slate-900` or `sky-950`
 - Accent → `amber-500` or `orange-600`
 - Surface → `slate-50`
 - Text on dark → `white`
 - Text on light → `slate-800`
 
-Be consistent — pick one set and apply it throughout.
-
 ## Typography & Fonts
 
 ### Font specification for this project
-- **Body font:** Open Sans
-- **Accent/heading font:** _(none — use body font for all headings)_
+Fonts are specified in `CLAUDE.md → ## Project`. Read them from there before adding the `@import`.
+If no fonts are specified — derive from `design-examples/` or use the system font stack.
 
 ### Rules
 - AI must add a Google Fonts `@import` to `src/styles/main.css` for every font in use
 - **CRITICAL:** `@import url(...)` must be placed on **line 1**, before `@import "tailwindcss"` — CSS requires all `@import` statements before any other rules
+- Apply body font globally via `font-[Family_Name]` on `<body>` (use underscores for spaces, e.g. `font-[Open_Sans]`)
 - A project may use **one font** (body only) or **two fonts** (body + distinct heading font)
 - If two fonts: apply the heading font to `<h1>`–`<h3>` via `font-[family-name]` utility
 - Never load fonts that are not actually used in the HTML
@@ -64,7 +62,8 @@ Be consistent — pick one set and apply it throughout.
 
 ## Typography scale
 - Hero H1: `text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight`
-- Section H2: `text-3xl md:text-4xl font-bold tracking-wide`
+- Section H2: `text-3xl md:text-4xl font-bold tracking-tight`
+- Subsection H3: `text-xl md:text-2xl font-semibold`
 - Body: `text-base leading-relaxed` (min 16px)
 - One `<h1>` per page — all others `<h2>` → `<h3>`
 
@@ -79,8 +78,24 @@ Be consistent — pick one set and apply it throughout.
 - Default styles = mobile (`< 640px`)
 - Override at `sm:` / `md:` / `lg:` / `xl:` / `2xl:`
 - Grid: always start `grid-cols-1`, expand at `md:grid-cols-2`, `lg:grid-cols-3`
-- Touch targets: minimum `min-h-[44px] min-w-[44px]`
+- Touch targets: minimum `min-h-11 min-w-11`
 - Images: `w-full` with explicit `aspect-*` or `object-cover`
+
+## Background images
+Sections with a background image (e.g. hero) must use inline `style="background-image: url('/images/[filename]')"` — not an `<img>` tag.
+This keeps the markup clean for WordPress migration where background images are set via ACF/CSS.
+
+```html
+<section
+  id="hero"
+  style="background-image: url('/images/hero.jpg')"
+  class="bg-cover bg-center bg-no-repeat"
+>
+```
+
+- Always pair with `bg-cover bg-center bg-no-repeat` Tailwind classes
+- Add a dark overlay as a child `<div>` with `absolute inset-0 bg-black/50` (adjust opacity as needed)
+- Set `class="relative"` on the section so the overlay positions correctly
 
 ## Section rhythm
 - Section padding: `py-16 md:py-24`
@@ -91,43 +106,37 @@ Be consistent — pick one set and apply it throughout.
 ## Component patterns
 
 ### Cards
-| Element    | Classes                              |
-|------------|--------------------------------------|
-| Card       | `overflow-hidden rounded-2xl shadow-lg` |
-| Card image | `w-full aspect-video object-cover`   |
+- Card styling (rounding, shadow, border) — derive from `design-examples/`
+- Card image: always `w-full object-cover` + explicit `aspect-*` based on design
 
 ### Buttons
 Apply structure classes + color classes together. Color classes depend on the project palette.
 
 **Primary button** (solid, high contrast — use for main CTA):
 ```html
-<a href="#contact" class="inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold bg-amber-500 text-white transition duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500">
-  Get a Free Quote
+<a href="..." class="inline-flex items-center gap-2 rounded-{derive from design-examples} px-6 py-3 font-semibold bg-[accent] text-[contrast] transition duration-200 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[accent]">
+  Label
 </a>
 ```
 
 **Secondary button** (outlined — use on dark backgrounds):
 ```html
-<a href="tel:+1XXXXXXXXXX" class="inline-flex items-center gap-2 rounded-xl px-6 py-3 font-semibold border-2 border-white text-white transition duration-200 hover:bg-white hover:text-slate-900">
-  Call Now
+<a href="..." class="inline-flex items-center gap-2 rounded-{derive from design-examples} px-6 py-3 font-semibold border-2 border-[contrast] text-[contrast] transition duration-200 hover:bg-[contrast] hover:text-[primary]">
+  Label
 </a>
 ```
 
-_Replace `amber-500` / `slate-900` with the project's actual Tailwind color shades._
+_Use the project's actual Tailwind color shades from `CLAUDE.md` and rounding derived from `design-examples/`._
 
-### Other
-| Element     | Classes                                |
-|-------------|----------------------------------------|
-| Trust badge | `flex items-center gap-3 text-sm font-semibold` |
 
 ## Header & Footer
 - Header and footer stubs in `components/` are intentionally empty
-- AI must build them from scratch using content from `content/content-homepage.md` and rules from `layout.md`, `alpine.md`, and `accessibility.md`
+- AI must build them from scratch using content from `content/[page].md` and rules from `layout.md`, `scripts.md`, and `accessibility.md`
 - Header must include: logo, navigation links, phone CTA, mobile hamburger menu
 - Footer must include: company name, quick links, contact info, license/copyright
 
 ## Section structure
 Every `<section>` must have:
-- `id="[section-id]"` — matches ids in `content/structure.md`
+- `id="[section-id]"` — matches the id from the `**tag:**` line in the corresponding `## section:` block of `content/[page].md`
 - `aria-label="[Section Name]"`
 - Comment: `<!-- SECTION: SectionName -->`

@@ -1,13 +1,11 @@
----
-globs: ["**/*.html", "**/*.hbs"]
----
-
 # Accessibility Rules (WCAG 2.1 AA)
 
 ## Must-haves on every page
+- [ ] `<html lang="en">` (or correct language code)
+- [ ] `<title>` present and descriptive — screen readers announce it first
 - [ ] Skip-to-main link as **first focusable element** in `<body>`
   ```html
-  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 ...">
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:px-4 focus:py-2 focus:text-sm focus:font-semibold">
     Skip to main content
   </a>
   ```

@@ -1,10 +1,6 @@
----
-globs: ["**/*.html", "**/*.hbs"]
----
+# Scripts & UI Rules
 
-# Alpine.js Rules
-
-## Core principle
+## Alpine.js — core principle
 All UI interactivity lives in HTML via Alpine directives.
 No separate JS files for UI behavior unless initializing a third-party library.
 
@@ -60,7 +56,7 @@ No separate JS files for UI behavior unless initializing a third-party library.
 
 ### Mobile nav toggle
 ```html
-<nav x-data="{ open: false }">
+<nav x-data="{ open: false }" @keydown.escape.window="open = false" @click.outside="open = false">
   <button
     @click="open = !open"
     :aria-expanded="open"
@@ -147,7 +143,7 @@ Initialized with `once: true` and `duration: 700`. Add `data-aos` attributes dir
 **Stagger delay rule:** For grids with 2–4 items use `delay="0/100/200/300"`. For larger grids (6+ items) skip delay — applying it to all items looks cluttered.
 
 ### Swiper — slider / carousel
-Use when a section in `content/structure.md` is marked with `**slider:** swiper`.
+Use when a section in `content/[page].md` contains `**slider:** swiper`.
 
 **Rules:**
 - Install via npm — already in `package.json`. Never use a CDN.

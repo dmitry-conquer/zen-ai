@@ -1,27 +1,27 @@
-# Session Start Prompt
+# Prompt Example
 
-> Copy and paste this at the beginning of every new Claude Code session.
-
+## Session start
+> Use at the beginning of every new session before writing any code.
 ```
-Read these files in order:
-1. CLAUDE.md
-2. content/content-homepage.md
-3. content/structure.md
-4. public/images/images.md
-5. design-examples/README.md and visually analyze images in design-examples/
-6. src/styles/main.css
-7. .claude/rules/layout.md (font and color specs)
-8. List files in components/
+Your task is to build a complete, production-ready website layout based on the provided content, images, and design references.
 
-Confirm back:
-- The non-negotiables
-- Section order with id and background color
-- Images marked [x] as ready
-- Chosen primary and accent Tailwind color shades (from layout.md or derived from design-examples/)
-- Font(s) to import from Google Fonts (from layout.md)
-- Existing component partials
+Before writing any code, read the following in order:
+1. CLAUDE.md — project description, file structure, rules overview
+2. .claude/rules/ — all rules files
+3. content/ — all page files (e.g. homepage.md, about.md) — section structure and copy for each page
+4. public/images/ — list available image files
+5. design-examples/ — visually analyze all images to derive color palette, layout patterns and visual style
+6. src/styles/main.css — check if Google Fonts import is already present
+7. components/ — list existing partials
 
-Do not write any code until I confirm your summary.
+Then confirm back before touching any file:
+- Pages to build and their content files
+- Non-negotiables you will follow
+- Section order per page: id, background, what it contains
+- Images available in `public/images/` vs missing (will use placeholder)
+- Tailwind color shades chosen for primary, accent, surface
+- Font(s) to use and whether the @import is already in main.css
+- Existing component partials found in components/
+
+Do not write any code until I explicitly confirm your summary.
 ```
-
-> All other prompt templates are in `CLAUDE.md → ## Prompt templates`.
