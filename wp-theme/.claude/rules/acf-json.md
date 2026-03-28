@@ -22,8 +22,8 @@ File: `acf-json/group_flexible_content.json`
       "name": "content",
       "type": "flexible_content",
       "button_label": "Add section",
-      "layouts": [
-        {
+      "layouts": {
+        "layout_hero": {
           "key": "layout_hero",
           "name": "hero",
           "label": "Hero",
@@ -63,7 +63,7 @@ File: `acf-json/group_flexible_content.json`
             }
           ]
         }
-      ]
+      }
     }
   ],
   "location": [
@@ -132,7 +132,8 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
           "label": "Title",
           "name": "title",
           "type": "text",
-          "required": 1
+          "required": 1,
+          "parent_repeater": "field_services_items"
         },
         {
           "key": "field_services_items_description",
@@ -140,16 +141,18 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
           "name": "description",
           "type": "textarea",
           "rows": 3,
-          "required": 0
+          "required": 0,
+          "parent_repeater": "field_services_items"
         },
         {
           "key": "field_services_items_icon",
           "label": "Icon",
           "name": "icon",
           "type": "image",
-          "return_format": "array",
+          "return_format": "id",
           "preview_size": "thumbnail",
-          "required": 0
+          "required": 0,
+          "parent_repeater": "field_services_items"
         }
       ]
     }
@@ -173,6 +176,6 @@ Minimum required: `key`, `label`, `name`, `type`. All other properties are optio
 ---
 
 ## Adding a new layout
-1. Add the layout object to `"layouts": [...]` array in `group_flexible_content.json`
+1. Add the layout object to `"layouts": {...}` object in `group_flexible_content.json` — key = layout key (e.g., `"layout_hero": { ... }`)
 2. Create the matching PHP file: `template-parts/flexible/[layout-name].php`
 3. Layout `"name"` must exactly match the PHP filename (without `.php`)
