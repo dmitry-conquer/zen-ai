@@ -9,34 +9,39 @@ Convert the approved static layout (Vite + Tailwind + Alpine.js) into ACF Flexib
 
 ## Step-by-step order (always follow)
 
-### 1. Read the static source
+### 1. Determine scope automatically
+- Collect all `## [section-id]` headings from `../content/[page].md` — full section list
+- Exclude non-buildable headings: `Project`, `Brief`, `meta`, `header`, `footer` (header/footer are handled in Step 6 separately)
+- List files in `template-parts/flexible/` — every matching `[section-id].php` is already implemented
+- Remaining sections = pending work
+- Report before proceeding: "Implemented: X, Y. Pending: A, B, C."
+
+### 2. Read the static source
 - Read `../components/[name].html` — understand the HTML structure
 - Read `../content/[page].md` — understand all copy fields and section IDs
 - List all **hardcoded values** that must become ACF fields (text, images, links, lists)
 
-### 2. Define fields for this section
+### 3. Define fields for this section
 - For each hardcoded value → choose the correct ACF type (see `acf-fields.md`)
 - Name fields in `snake_case`, short and descriptive (e.g., `heading`, `body_text`, `cta_link`, `background_image`)
 - Group repeating items into a **Repeater** field
 
-### 3. Create the PHP template part
+### 4. Create the PHP template part
 - File: `template-parts/flexible/[layout-name].php`
 - Layout name = section ID from `content/[page].md` (e.g., `hero`, `services`, `about`)
 - Replace every hardcoded value with `get_sub_field()` call
 - Follow patterns in `php-patterns.md` — no exceptions
 
-### 4. Generate ACF JSON for this layout
-- Each section = one `acf-json/layout_[name].json` file during development
-- Follow the format in `acf-json.md` exactly
+### 5. Add layout to the master field group
+- Always write directly into `acf-json/group_flexible_content.json` — never create separate `layout_*.json` files
+- If `group_flexible_content.json` does not exist yet — create it using the structure from `acf-json.md`
+- Add the new layout object into `"layouts": { ... }` alongside any existing ones
 - Key format: `field_[layout]_[fieldname]` (e.g., `field_hero_heading`)
-
-### 5. After ALL sections are done — build the master field group
-- Create `acf-json/group_flexible_content.json`
-- This is the **single Flexible Content field group** that combines all layouts
-- Location rule: `page_template == templates/flexible.php`
-- All individual `layout_*.json` files can be deleted after merging
+- Location rule must be: `page_template == templates/flexible.php`
 
 ### 6. Convert header and footer
+**Prerequisite:** only proceed if `../components/header.html` and `../components/footer.html` are non-empty (i.e., fully built in the static project). If either file is an empty stub — skip it, note "header/footer: pending — static not built yet", and move on.
+
 - Read `../components/header.html` → convert to `template-parts/header-default.php`
 - Read `../components/footer.html` → convert to `template-parts/footer-default.php`
 - Header nav: use `wp_nav_menu()` with `header_menu` and `header_mobile_menu`

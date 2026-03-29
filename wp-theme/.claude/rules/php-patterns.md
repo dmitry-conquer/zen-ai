@@ -9,7 +9,7 @@ Every `template-parts/flexible/[name].php` follows this skeleton:
  * Flexible layout: [Layout Label]
  *
  * Fields:
- *  - heading (text)
+ *  - heading (textarea)
  *  - body_text (textarea)
  *  - cta_link (link)
  *
@@ -55,24 +55,17 @@ if (!empty($cta_link)) { ... }
 
 ---
 
-## Text field
-```php
-$heading = get_sub_field('heading');
-?>
-<?php if (!empty($heading)): ?>
-  <h2 class="..."><?= esc_html($heading) ?></h2>
-<?php endif; ?>
-```
-
----
-
-## Textarea field
-All descriptive text (paragraphs, descriptions, body copy) uses Textarea — **not** WYSIWYG.
+## Textarea field — used for ALL text fields
+All text fields (headings, labels, descriptions, body copy) use Textarea — **not** Text or WYSIWYG.
 ACF stores raw text; newlines are converted to `<br>` via `nl2br()` in PHP.
 
 ```php
-$text = get_sub_field('body_text');
+$heading = get_sub_field('heading');
+$text    = get_sub_field('body_text');
 ?>
+<?php if (!empty($heading)): ?>
+  <h2 class="..."><?= nl2br(esc_html($heading)) ?></h2>
+<?php endif; ?>
 <?php if (!empty($text)): ?>
   <p class="..."><?= nl2br(esc_html($text)) ?></p>
 <?php endif; ?>
@@ -158,48 +151,33 @@ $link = get_sub_field('cta_link');
 ---
 
 ## Phone and email links
-Phone and email are **Group fields**, each with two sub-fields:
-- `link` (URL) — the full `tel:` or `mailto:` URL entered in ACF
-- `label` (Text) — the human-readable display string
+Phone and email are **Link fields** — the editor sets the URL (`tel:` / `mailto:`) and the display label in one field.
 
 ```php
 $phone = get_sub_field('phone');
 $email = get_sub_field('email');
 ?>
 <?php if (!empty($phone)): ?>
-  <a href="<?= esc_url($phone['link']) ?>" class="...">
-    <?= esc_html($phone['label']) ?>
+  <a href="<?= esc_url($phone['url']) ?>" class="...">
+    <?= esc_html($phone['title']) ?>
   </a>
 <?php endif; ?>
 
 <?php if (!empty($email)): ?>
-  <a href="<?= esc_url($email['link']) ?>" class="...">
-    <?= esc_html($email['label']) ?>
+  <a href="<?= esc_url($email['url']) ?>" class="...">
+    <?= esc_html($email['title']) ?>
   </a>
 <?php endif; ?>
 ```
 
-ACF JSON for the phone group sub-fields:
+ACF JSON:
 ```json
 {
   "key": "field_[section]_phone",
   "label": "Phone",
   "name": "phone",
-  "type": "group",
-  "sub_fields": [
-    {
-      "key": "field_[section]_phone_link",
-      "label": "Link",
-      "name": "link",
-      "type": "url"
-    },
-    {
-      "key": "field_[section]_phone_label",
-      "label": "Label",
-      "name": "label",
-      "type": "text"
-    }
-  ]
+  "type": "link",
+  "return_format": "array"
 }
 ```
 Use the same structure for `email`.
@@ -224,7 +202,7 @@ Use the same structure for `email`.
           ]) ?>
         <?php endif; ?>
         <?php if (!empty($title)): ?>
-          <h3 class="..."><?= esc_html($title) ?></h3>
+          <h3 class="..."><?= nl2br(esc_html($title)) ?></h3>
         <?php endif; ?>
         <?php if (!empty($description)): ?>
           <p class="..."><?= nl2br(esc_html($description)) ?></p>
@@ -234,6 +212,37 @@ Use the same structure for `email`.
   </div>
 <?php endif; ?>
 ```
+
+## Repeater with step numbers
+When cards need an order number (steps, process, how-it-works), fetch all rows as array and use `foreach` with index:
+
+```php
+<?php $items = get_sub_field('items'); ?>
+<?php if (!empty($items)): ?>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <?php foreach ($items as $index => $item): ?>
+      <?php
+        $number      = $index + 1;
+        $title       = $item['title'];
+        $description = $item['description'];
+      ?>
+      <div class="...">
+        <span class="..."><?= esc_html($number) ?></span>
+        <?php if (!empty($title)): ?>
+          <h3 class="..."><?= nl2br(esc_html($title)) ?></h3>
+        <?php endif; ?>
+        <?php if (!empty($description)): ?>
+          <p class="..."><?= nl2br(esc_html($description)) ?></p>
+        <?php endif; ?>
+      </div>
+    <?php endforeach; ?>
+  </div>
+<?php endif; ?>
+```
+
+- `$index` is 0-based — always add `+ 1` for display
+- Sub-fields are accessed as array keys: `$item['field_name']`
+- Use this pattern only when the number is visually rendered; for regular repeaters use `have_rows` / `the_row`
 
 ---
 
@@ -249,6 +258,23 @@ wp_nav_menu([
 ```
 
 For mobile nav use `header_mobile_menu`. For footer use `footer_menu`.
+
+---
+
+## AOS attributes
+Always preserve `data-aos` and `data-aos-delay` attributes from the static HTML — copy them as-is into PHP templates. AOS is initialized globally and works without any changes in PHP.
+
+```php
+<h2 data-aos="fade-up" class="..."><?= nl2br(esc_html($heading)) ?></h2>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <?php foreach ($items as $index => $item): ?>
+    <div data-aos="fade-up" data-aos-delay="<?= esc_attr($index * 100) ?>" class="...">
+      ...
+    </div>
+  <?php endforeach; ?>
+</div>
+```
 
 ---
 

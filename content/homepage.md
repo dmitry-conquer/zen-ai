@@ -1,5 +1,13 @@
 # Homepage — [Company Name]
 
+## Project
+- **Client:** [Company name]
+- **Business:** [Brief description — what they do, who they serve]
+- **Site goal:** [e.g. generate leads, drive phone calls, build trust]
+- **Tone:** [e.g. professional, friendly, local]
+
+---
+
 ## Brief
 _Notes from the client or project owner. Free text — describe layout wishes, style preferences, sections to skip, special requirements, etc._
 

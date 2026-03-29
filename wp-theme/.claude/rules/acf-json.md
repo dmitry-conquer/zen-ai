@@ -33,24 +33,24 @@ File: `acf-json/group_flexible_content.json`
               "key": "field_hero_heading",
               "label": "Heading",
               "name": "heading",
-              "type": "text",
-              "required": 1
+              "type": "textarea",
+              "rows": 2,
+              "new_lines": ""
             },
             {
               "key": "field_hero_subheading",
               "label": "Subheading",
               "name": "subheading",
               "type": "textarea",
-              "rows": 3,
-              "required": 0
+              "rows": 2,
+              "new_lines": ""
             },
             {
               "key": "field_hero_cta_link",
               "label": "CTA Button",
               "name": "cta_link",
               "type": "link",
-              "return_format": "array",
-              "required": 0
+              "return_format": "array"
             },
             {
               "key": "field_hero_background_image",
@@ -58,8 +58,7 @@ File: `acf-json/group_flexible_content.json`
               "name": "background_image",
               "type": "image",
               "return_format": "id",
-              "preview_size": "medium",
-              "required": 0
+              "preview_size": "medium"
             }
           ]
         }
@@ -101,6 +100,16 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
 
 **Never reuse the same key across different layouts.**
 
+**Layout `"name"` must use underscores, never hyphens.** It is used as a PHP identifier in `get_template_part()` and as a filename — both require underscores. The HTML `id` attribute on the `<section>` may use hyphens, but the ACF layout name must not.
+
+| Context | Format | Example |
+|---|---|---|
+| ACF layout `"name"` | `snake_case` | `trust_strip` |
+| PHP template filename | `snake_case` | `template-parts/flexible/trust_strip.php` |
+| HTML `id` attribute | `kebab-case` | `id="trust-strip"` |
+
+**The object key in `"layouts"` must exactly match the `"key"` field inside the layout object.** For example: `"layouts": { "layout_hero": { "key": "layout_hero", ... } }` — both must be `"layout_hero"`.
+
 ---
 
 ## Repeater layout example
@@ -116,8 +125,9 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
       "key": "field_services_heading",
       "label": "Heading",
       "name": "heading",
-      "type": "text",
-      "required": 1
+      "type": "textarea",
+      "rows": 2,
+      "new_lines": ""
     },
     {
       "key": "field_services_items",
@@ -131,8 +141,9 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
           "key": "field_services_items_title",
           "label": "Title",
           "name": "title",
-          "type": "text",
-          "required": 1,
+          "type": "textarea",
+          "rows": 2,
+          "new_lines": "",
           "parent_repeater": "field_services_items"
         },
         {
@@ -140,8 +151,8 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
           "label": "Description",
           "name": "description",
           "type": "textarea",
-          "rows": 3,
-          "required": 0,
+          "rows": 2,
+          "new_lines": "",
           "parent_repeater": "field_services_items"
         },
         {
@@ -151,7 +162,6 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
           "type": "image",
           "return_format": "id",
           "preview_size": "thumbnail",
-          "required": 0,
           "parent_repeater": "field_services_items"
         }
       ]
@@ -168,10 +178,14 @@ ACF keys must be **globally unique**. Follow this pattern without exception:
   "key": "field_[layout]_[name]",
   "label": "Human Label",
   "name": "snake_case_name",
-  "type": "text"
+  "type": "textarea",
+  "rows": 2,
+  "new_lines": ""
 }
 ```
 Minimum required: `key`, `label`, `name`, `type`. All other properties are optional unless the type requires them (e.g., `return_format` on `image` — always `"id"`; and on `link` — always `"array"`).
+
+**`required` field — NEVER include it.** All fields are optional by default. Do not add `"required": 0` or `"required": 1` to any field unless explicitly instructed.
 
 ---
 

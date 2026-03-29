@@ -1,18 +1,13 @@
-# Rick's AC Maintenance & Service LLC — Claude Config
+# Claude Config
 
 ## Project
-- **Type:** HVAC service landing page
 - **Stack:** Vite + Tailwind CSS v4 + Alpine.js + TypeScript + Handlebars
 - **Body font:** Open Sans
 - **Heading font:** _(none — use body font for all headings)_
 - **Colors:** _(not specified — derive from `design-examples/`)_
 
 ## About this project
-_Fill in before starting work:_
-- **Client:** Rick's AC Maintenance & Service LLC
-- **Business:** [brief description — what they do, who they serve]
-- **Site goal:** [e.g. generate leads, drive phone calls, build trust]
-- **Tone:** [e.g. professional, friendly, local]
+_See `content/homepage.md → ## Project` for client name, business description, site goal, and tone._
 
 ## File structure
 | What                  | Where                        |

@@ -1,7 +1,7 @@
 # WP Theme — Claude Config
 
 ## Project
-- **Theme:** Rick's AC Maintenance & Service LLC
+- **Theme:** _See `../content/homepage.md → ## Project` for client name and project details_
 - **Base:** WP Starter Theme (namespace `WP_Starter_Theme`)
 - **PHP:** 8.2+
 - **ACF:** Flexible Content via `acf-json/` sync
@@ -55,3 +55,12 @@ Static layout lives in the **parent directory** (`../`):
 | ACF field types | `.claude/rules/acf-fields.md` |
 | ACF JSON format | `.claude/rules/acf-json.md` |
 | PHP patterns | `.claude/rules/php-patterns.md` |
+
+## Static project rules (also apply here)
+The following rules from the static project govern behavior that carries over into PHP templates — read them when relevant:
+| What | Where |
+|---|---|
+| AOS animations (`data-aos`, `data-aos-delay`) | `../.claude/rules/scripts.md` |
+| Alpine.js directives and patterns | `../.claude/rules/scripts.md` |
+| Accessibility requirements | `../.claude/rules/accessibility.md` |
+| Layout, spacing, Tailwind usage | `../.claude/rules/layout.md` |
