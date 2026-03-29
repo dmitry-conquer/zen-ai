@@ -2,7 +2,7 @@
 
 ---
 
-## 1. Static layout (верстка)
+## 1. Static layout
 > Use at the beginning of every new session before writing any HTML.
 
 ```
@@ -32,7 +32,7 @@ Do not write any code until I explicitly confirm your summary.
 
 ---
 
-## 2. ACF / WordPress integration (посадка на WP)
+## 2. ACF / WordPress integration
 > Use at the beginning of every new session before writing any PHP or ACF JSON.
 
 ```
@@ -54,4 +54,22 @@ Then confirm back before touching any file:
 - For each pending section: fields to create and their ACF types
 
 Do not write any code until I explicitly confirm your summary.
+```
+
+---
+
+## 3. Content import
+> Use at the beginning of every new session before importing content into WordPress.
+
+```
+Read `content/`, `public/images/` and `wp-theme/acf-json/group_flexible_content.json`.
+Upload images to WP Media Library, create pages with template `templates/flexible.php` and fill
+ACF Flexible Content fields from content files.
+
+**WP site:** [URL]
+**WP user:** [username]
+**App Password:** [password]
+**Theme active:** yes
+
+Use WP-CLI via Local WP PHP + MySQL socket. Figure out everything needed on your own.
 ```
