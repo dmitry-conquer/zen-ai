@@ -8,6 +8,7 @@
 
 ## About this project
 _See `content/homepage.md → ## Project` for client name, business description, site goal, and tone._
+_See `content/example.md` for a fully filled-in example of the content format._
 
 ## File structure
 | What                  | Where                        |

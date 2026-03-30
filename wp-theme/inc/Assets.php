@@ -6,12 +6,12 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-define('ASSETS_VERSION', '1.0.0');
-
 class Assets {
+  const ASSETS_VERSION = '1.0.0';
+
   public static function register() {
     add_action('wp_enqueue_scripts', [self::class, 'enqueue_assets']);
-
+    add_action('wp_enqueue_scripts', [self::class, 'dequeue_style'], 100);
     add_action('init', [self::class, 'remove_global_styles']);
 
     remove_action('wp_head', 'print_emoji_detection_script', 7);
@@ -20,11 +20,11 @@ class Assets {
 
   public static function enqueue_assets() {
     if (!is_admin()) {
-      wp_enqueue_style('style-css', WP_STARTER_THEME_URI . '/assets/css/style.css', [], filemtime(WP_STARTER_THEME_DIR . '/assets/css/style.css') ?: ASSETS_VERSION);
-      wp_enqueue_script('script-js', WP_STARTER_THEME_URI . '/assets/js/script.js', [], filemtime(WP_STARTER_THEME_DIR . '/assets/js/script.js') ?: ASSETS_VERSION, true);
+      wp_enqueue_style('style-css', WP_STARTER_THEME_URI . '/assets/css/style.css', [], filemtime(WP_STARTER_THEME_DIR . '/assets/css/style.css') ?: self::ASSETS_VERSION);
+      wp_enqueue_script('script-js', WP_STARTER_THEME_URI . '/assets/js/script.js', [], filemtime(WP_STARTER_THEME_DIR . '/assets/js/script.js') ?: self::ASSETS_VERSION, true);
     }
   }
-  
+
   public static function dequeue_style() {
     wp_dequeue_style('wp-block-library');
     wp_dequeue_style('wp-block-library-theme');

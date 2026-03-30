@@ -8,35 +8,58 @@ final class Menu
 {
   public static function register()
   {
-    add_filter('nav_menu_link_attributes', [self::class, 'add_custom_menu_link_class'], 10, 4);
-    add_filter('nav_menu_css_class', [self::class, 'add_custom_classes_to_menu_li'], 10, 4);
+    add_filter('nav_menu_link_attributes', [self::class, 'add_link_classes'], 10, 4);
+    add_filter('nav_menu_css_class', [self::class, 'add_li_classes'], 10, 4);
   }
 
-  public static function add_custom_menu_link_class($atts, $item, $args, $depth)
+  /**
+   * Add Tailwind classes to <a> elements.
+   * Derive actual classes from components/header.html and components/footer.html
+   * after the static layout is built.
+   */
+  public static function add_link_classes($atts, $item, $args, $depth)
   {
-    if ($args->theme_location === 'header_menu') {
-      $atts['class'] = 'header__nav-link';
+    if (!isset($args->theme_location)) {
+      return $atts;
     }
-    if ($args->theme_location === 'header_mobile_menu') {
-      $atts['class'] = 'header-overlay__nav-link';
+
+    // Example Tailwind classes — replace with classes from the built static layout
+    $map = [
+      'header_menu'        => 'text-sm font-semibold text-white hover:text-amber-400 transition-colors duration-200',
+      'header_mobile_menu' => 'block py-3 text-base font-semibold text-white hover:text-amber-400 transition-colors duration-200',
+      'footer_menu'        => 'text-sm text-slate-400 hover:text-white transition-colors duration-200',
+    ];
+
+    if (isset($map[$args->theme_location])) {
+      $existing = $atts['class'] ?? '';
+      $atts['class'] = trim($existing . ' ' . $map[$args->theme_location]);
     }
-    if ($args->theme_location === 'footer_menu') {
-      $atts['class'] = 'footer__nav-link';
-    }
+
     return $atts;
   }
 
-  public static function add_custom_classes_to_menu_li($classes, $item, $args, $depth)
+  /**
+   * Add Tailwind classes to <li> elements.
+   * Derive actual classes from components/header.html and components/footer.html
+   * after the static layout is built.
+   */
+  public static function add_li_classes($classes, $item, $args, $depth)
   {
-    if ($args->theme_location === 'header_menu') {
-      $classes[] = 'header__nav-item';
+    if (!isset($args->theme_location)) {
+      return $classes;
     }
-    if ($args->theme_location === 'header_mobile_menu') {
-      $classes[] = 'header-overlay__nav-item';
+
+    // Example Tailwind classes — replace with classes from the built static layout
+    $map = [
+      'header_menu'        => 'relative',
+      'header_mobile_menu' => 'border-b border-white/10 last:border-0',
+      'footer_menu'        => '',
+    ];
+
+    if (isset($map[$args->theme_location]) && $map[$args->theme_location] !== '') {
+      $classes[] = $map[$args->theme_location];
     }
-    if ($args->theme_location === 'footer_menu') {
-      $classes[] = 'footer__nav-item';
-    }
-    return $classes;
+
+    return array_filter($classes);
   }
 }

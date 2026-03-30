@@ -46,13 +46,6 @@ final class Setup
     ]);
   }
 
-  public static function allow_custom_mime_types()
-  {
-    $mimes['woff'] = 'font/woff';
-    $mimes['woff2'] = 'font/woff2';
-    return $mimes;
-  }
-
   public static function custom_login_styles()
   {
     echo '<style>

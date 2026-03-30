@@ -24,6 +24,6 @@
 <body <?php body_class(); ?>>
   <?php wp_body_open(); ?>
   <div id="page" class="site-page">
-    <a class="skip-link sr-only" href="#primary">Skip to content</a>
+    <a class="skip-link sr-only" href="#main-content">Skip to content</a>
 
     <?php get_template_part('template-parts/header', 'default'); ?>

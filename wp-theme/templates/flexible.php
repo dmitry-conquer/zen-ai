@@ -8,7 +8,7 @@
 get_header();
 ?>
 
-<main id="primary" class="site-main">
+<main id="main-content" class="site-main">
   <?php if (have_rows('content')): ?>
     <?php while (have_rows('content')):
       the_row(); ?>
