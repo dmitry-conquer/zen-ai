@@ -247,6 +247,54 @@ When cards need an order number (steps, process, how-it-works), fetch all rows a
 ---
 
 ## Navigation (header / footer)
+
+`wp_nav_menu()` generates `<li>` and `<a>` elements with its own markup — Tailwind classes cannot be passed via parameters. Use WordPress filters to add classes.
+
+### Filters — add to `functions.php` or a dedicated `inc/` class
+
+```php
+// Add classes to <li> elements
+add_filter('nav_menu_css_class', function (array $classes, \WP_Post $item, \stdClass $args, int $depth): array {
+    if (!isset($args->theme_location)) {
+        return $classes;
+    }
+    $map = [
+        'header_menu'        => 'relative',
+        'header_mobile_menu' => 'border-b border-white/10 last:border-0',
+        'footer_menu'        => '',
+    ];
+    if (isset($map[$args->theme_location])) {
+        $classes[] = $map[$args->theme_location];
+    }
+    return array_filter($classes); // strip empty entries
+}, 10, 4);
+
+// Add classes to <a> elements
+add_filter('nav_menu_link_attributes', function (array $atts, \WP_Post $item, \stdClass $args, int $depth): array {
+    if (!isset($args->theme_location)) {
+        return $atts;
+    }
+    $map = [
+        'header_menu'        => 'text-sm font-semibold text-white hover:text-amber-400 transition-colors duration-200',
+        'header_mobile_menu' => 'block py-3 text-base font-semibold text-white hover:text-amber-400 transition-colors duration-200',
+        'footer_menu'        => 'text-sm text-slate-400 hover:text-white transition-colors duration-200',
+    ];
+    if (isset($map[$args->theme_location])) {
+        $existing = $atts['class'] ?? '';
+        $atts['class'] = trim($existing . ' ' . $map[$args->theme_location]);
+    }
+    return $atts;
+}, 10, 4);
+```
+
+**Rules:**
+- Always check `isset($args->theme_location)` — the filter fires for every menu on the page
+- Derive the actual Tailwind classes from the static `components/header.html` and `components/footer.html`
+- The `$map` arrays above are examples — replace with classes matching the built static layout
+- If the active menu item needs a highlight style, add it via `in_array('current-menu-item', $classes)` check inside the `nav_menu_css_class` filter
+
+### wp_nav_menu() call
+
 ```php
 wp_nav_menu([
   'theme_location' => 'header_menu',

@@ -60,7 +60,8 @@ This ensures every section has a dedicated file that can be read independently d
    - Exclude non-buildable headings: `Project`, `Brief`, `meta`, `header`, `footer`
    - List files in `components/` — every matching `[section-id].html` is already built
    - Remaining sections = pending work
-   - Report the result before proceeding: "Built: X, Y. Pending: A, B, C."
+   - **Header/footer check:** inspect `components/header.html` and `components/footer.html` — if either is an empty stub (`<header></header>` / `<footer></footer>`), add it to the pending list explicitly
+   - Report the result before proceeding: "Built: X, Y. Pending: A, B, C. Header: built/pending. Footer: built/pending."
 3. Check `public/images/` → list available image files
 4. Analyze images in `design-examples/` → internalize visual direction and color palette
 5. Read `CLAUDE.md → ## Project` → confirm font(s) and color shades for this project

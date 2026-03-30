@@ -4,6 +4,7 @@
 
 ## 1. Static layout
 > Use at the beginning of every new session before writing any HTML.
+> **Run `/frontend-design` first, then paste this prompt.**
 
 ```
 Your task is to build a complete, production-ready static website layout based on the provided content, images, and design references.
@@ -14,7 +15,7 @@ Before writing any code, read the following in order:
 1. CLAUDE.md — stack, fonts, colors overview
 2. .claude/rules/ — all rules files (workflow, layout, scripts, accessibility, seo, sources)
 3. content/homepage.md — read ## Project first (client, business, tone), then ## Brief, then all sections
-4. Determine scope: collect all ## [section-id] headings from content files, exclude (Project, Brief, meta, header, footer), then list files in components/ — what exists is already built, the rest is pending
+4. Determine scope: collect all ## [section-id] headings from content files, exclude (Project, Brief, meta, header, footer), then list files in components/ — what exists is already built, the rest is pending. Also check components/header.html and components/footer.html — if either is an empty stub, add it to the pending list explicitly.
 5. public/images/ — list available image files
 6. design-examples/ — visually analyze all images to derive color palette, layout patterns, and visual style
 7. src/styles/main.css — check if Google Fonts @import is already on line 1
@@ -44,7 +45,7 @@ Then read the following in order:
 3. content/homepage.md — read ## Project first (client, business, tone), then all sections
 4. Determine scope:
    - Flexible sections: collect all ## [section-id] headings from content files, exclude (Project, Brief, meta, header, footer), compare with wp-theme/template-parts/flexible/ — what exists is implemented, the rest is pending
-   - Header/footer: check if components/header.html and components/footer.html are non-empty — if empty stubs, mark as pending
+   - Header/footer: check if components/header.html and components/footer.html are non-empty — if empty stubs, mark as **pending (blocker)** and do not proceed with WP migration until they are built in the static project
 5. components/ — for each pending section, confirm the static component file exists and is non-empty
 
 Then confirm back before touching any file:

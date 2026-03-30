@@ -20,6 +20,11 @@ _See `content/homepage.md → ## Project` for client name, business description,
 | Build output          | `dist/`                      |
 
 
+## Design skill
+Before writing any HTML, invoke the frontend-design skill if not already active in this session.
+Always use the frontend-design skill when creating or modifying UI components.
+
+
 ## Quick Reference
 | What              | Where                                            |
 |-------------------|--------------------------------------------------|

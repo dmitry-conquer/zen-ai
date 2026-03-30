@@ -40,7 +40,7 @@ Convert the approved static layout (Vite + Tailwind + Alpine.js) into ACF Flexib
 - Location rule must be: `page_template == templates/flexible.php`
 
 ### 6. Convert header and footer
-**Prerequisite:** only proceed if `../components/header.html` and `../components/footer.html` are non-empty (i.e., fully built in the static project). If either file is an empty stub — skip it, note "header/footer: pending — static not built yet", and move on.
+**Prerequisite:** only proceed if `../components/header.html` and `../components/footer.html` are non-empty (i.e., fully built in the static project). If either file is an empty stub — **stop and report it as a blocker**: "Cannot convert header/footer — static component not built yet. Build it in the static project first, then return to this step." Do not skip silently and do not proceed to assets until both are resolved.
 
 - Read `../components/header.html` → convert to `template-parts/header-default.php`
 - Read `../components/footer.html` → convert to `template-parts/footer-default.php`
